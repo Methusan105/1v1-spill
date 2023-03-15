@@ -35,5 +35,5 @@ function animate() {
     window.requestAnimationFrame(animate)
     console.log("go")
 
-} 
+}
 animate()
