@@ -17,17 +17,41 @@ const gravity = 0.7;
 /* Lager en klasse som heter Sprite */
 class Sprite {
   /* Lager en konstruktur som tar inn objekt med to egenskaper som: position og velocity */
-  constructor({ position, velocity }) {
+  constructor({ position, velocity, color = "red", offset }) {
     this.position = position;
     this.velocity = velocity;
+    this.width = 50;
     this.height = 150;
-    this.lastKey
+    this.lastKey;
+    this.attackBox = {
+      position: {
+        x:this.position.x,
+        y:this.position.y
+      },
+      offset,
+      width: 100,
+      height: 50,
+    };
+    this.color = color;
+    this.isAttacking
+    this.health = 100
   }
 
   /* Klassen har to forskjellige måter som er draw() og update() for å fylle et rektangel på canvas med fargen grønn */
   draw() {
+    c.fillStyle = this.color;
+    c.fillRect(this.position.x, this.position.y, this.width, this.height);
+
+    /* Angrip boks */
+    if(this.isAttacking){
     c.fillStyle = "green";
-    c.fillRect(this.position.x, this.position.y, 50, this.height);
+    c.fillRect(
+      this.attackBox.position.x,
+      this.attackBox.position.y,
+      this.attackBox.width,
+      this.attackBox.height
+    );
+    }
   }
 
   /* Oppdaterer objektets posisjon basert på hastigheten til objektene, 
@@ -35,11 +59,20 @@ class Sprite {
     og når den treffer bakken setter hastigheten til 0 ellers legges til verdien av gravity i y-verdien av velocity */
   update() {
     this.draw();
+    this.attackBox.position.x = this.position.x + this.attackBox.offset.x
+    this.attackBox.position.y = this.position.y
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
     if (this.position.y + this.height + this.velocity.y >= canvas.height) {
       this.velocity.y = 0;
     } else this.velocity.y += gravity;
+  }
+  attack(){
+    this.isAttacking = true
+    setTimeout(() => {
+      this.isAttacking = false
+
+    }, 100)
   }
 }
 
@@ -54,6 +87,10 @@ const player = new Sprite({
     x: 0,
     y: 0,
   },
+  offset: {
+    x: 0,
+    y: 0
+  }
 });
 
 /* Lager en variabelen som heter Enemy,
@@ -67,6 +104,11 @@ const enemy = new Sprite({
     x: 0,
     y: 0,
   },
+  offset: {
+    x: -50,
+    y: 0 
+  },
+  color: "blue",
 });
 
 /* Lager funksjonen keys */
@@ -78,25 +120,49 @@ const keys = {
     pressed: false,
   },
   w: {
-    pressed: false
+    pressed: false,
   },
   ArrowRight: {
-    pressed: false
+    pressed: false,
   },
   ArrowLeft: {
+    pressed: false,
+  },
+  ArrowUp:{
     pressed: false
-  }
+  },
 };
 
-/* Lager en variabel som heter lastKey
-Lager en funksjon som heter animate, 
-den ber nettleseren om å kjøre animate funksjonen ved neste anledning med koden: window.requestAnimationFrame(animate) 
+/* 
+Lager en funksjon som heter animate
+
+Den ber nettleseren om å kjøre animate funksjonen ved neste anledning med koden: window.requestAnimationFrame(animate)
+
 Den fyller canvas elementet med fargen svart
-oppdaterer den posisjonen til player og enemy og tegner dem begge med den oppdaterte posisjon
-Kalles på animate() funksjonen for å starte animasjonsloopen 
+
+Oppdaterer posisjonen til player og enemy og tegner dem begge med den oppdaterte posisjon
+
 Setter player sin x hastighet til 0
-Hva a knappen ble trykket og siste knappen som ble trykket er a så skal player sin x hastighet være -1,
-ellers hvis d knappen ble trykket og siste knappen som ble trykket er d så skal player sin x hastighet være 1*/
+
+Hvis påstanden at a knappen ble trykket og siste knappen som ble trykket er a så skal player sin x hastighet settes på -5
+
+Ellers hvis påstanden d knappen ble trykket og siste knappen som ble trykket er d så skal player sin x hastighet settes på 5
+
+Setter enemy sin x hastighet til 0
+
+Hvis påstanden at ArrowLeft knappen ble trykket og siste knappen som ble trykket er ArrowLeft så skal enemy sin x hastighet settes på -5
+
+Ellers hvis påstanden ArrowRight knappen ble trykket og siste knappen som ble trykket er ArrowRight så skal enemy sin x hastighet settes på 5
+
+Kalles på animate() funksjonen for å starte animasjonsloopen */
+
+function rectangularCollision({rectangle1, rectangle2}){
+  return(rectangle1.attackBox.position.x + rectangle1.attackBox.width >= rectangle2.position.x &&
+    rectangle1.attackBox.position.x <= rectangle2.position.x + rectangle2.width &&
+    rectangle1.attackBox.position.y + rectangle1.attackBox.height >= rectangle2.position.y &&
+    rectangle1.attackBox.position.y <= rectangle2.position.y + rectangle2.height
+    )
+}
 
 function animate() {
   window.requestAnimationFrame(animate);
@@ -119,7 +185,28 @@ function animate() {
   } else if (keys.ArrowRight.pressed && enemy.lastKey === "ArrowRight") {
     enemy.velocity.x = 5;
   }
-  
+
+  /* Oppdage kollisjon */
+  if (
+     rectangularCollision({
+      rectangle1: player,
+      rectangle2: enemy
+     }) && player.isAttacking
+  ) {
+    player.isAttacking = false
+    enemy.health -= 20
+    document.getElementById("enemyHealth").style.width = enemy.health + "%"
+  }
+  if (
+     rectangularCollision({
+      rectangle1: enemy,
+      rectangle2: player
+     }) && enemy.isAttacking
+  ) {
+    enemy.isAttacking = false
+    player.health -= 20;
+    document.getElementById("playerHealth").style.width = player.health + "%";
+  }
 }
 animate();
 
@@ -147,24 +234,42 @@ window.addEventListener("keydown", (event) => {
       player.lastKey = "a";
       break;
     case "w":
-      player.velocity.y = -20
+      player.velocity.y = -20;
       break;
+    case " ":
+      player.attack()
+      break
     case "ArrowRight":
       keys.ArrowRight.pressed = true;
-      enemy.lastKey = "ArrowRight"
+      enemy.lastKey = "ArrowRight";
       break;
     case "ArrowLeft":
       keys.ArrowLeft.pressed = true;
       enemy.lastKey = "ArrowLeft";
       break;
     case "ArrowUp":
-      enemy.velocity.y = -20
+      enemy.velocity.y = -20;
+      break;
+    case "ArrowDown":
+      enemy.isAttacking = true
       break;
   }
 });
 
-/* Oppretter en lytter som lytter på når jeg slipper tasten fra tastaturen, når jeg slipper d-tasten så endrer hastigheten til spilleren til 0,
-når jeg slipper a-tasten så endrer hastigheten til spilleren til 0, betyr at når jeg slipper tasten så står spilleren i ro */
+/* Oppretter en lytter som lytter på når jeg slipper tasten fra tastaturen 
+
+Når jeg slipper d-tasten så setter den knappen d presset til false
+
+Når jeg slipper a-tasten så setter den knappen a presset til false
+
+Når jeg slipper w-tasten så setter den knappen d presset til false
+
+Når jeg slipper ArrowRight-tasten så setter den knappen ArrowRight presset til false
+
+Når jeg slipper ArrowLeft-tasten så setter den knappen ArrowLeft presset til false
+
+Når jeg slipper ArrowUp-tasten så setter den knappen ArrowUp presset til false*/
+
 window.addEventListener("keyup", (event) => {
   switch (event.key) {
     case "d":
