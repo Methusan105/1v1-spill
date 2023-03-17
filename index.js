@@ -11,8 +11,8 @@ canvas.height = window.innerHeight;
 /* Denne koden tegner en firkant, x og y verdien er satt til 0, mens bredden og høyden er satt til canvas.width og height */
 c.fillRect(0, 0, canvas.width, canvas.height);
 
-/* Lager en konstant med navnet gravity og setter den på 0.2 */
-const gravity = 0.2;
+/* Lager en konstant med navnet gravity og setter den på 0.7 */
+const gravity = 0.7;
 
 /* Lager en klasse som heter Sprite */
 class Sprite {
@@ -21,6 +21,7 @@ class Sprite {
     this.position = position;
     this.velocity = velocity;
     this.height = 150;
+    this.lastKey
   }
 
   /* Klassen har to forskjellige måter som er draw() og update() for å fylle et rektangel på canvas med fargen grønn */
@@ -76,6 +77,15 @@ const keys = {
   d: {
     pressed: false,
   },
+  w: {
+    pressed: false
+  },
+  ArrowRight: {
+    pressed: false
+  },
+  ArrowLeft: {
+    pressed: false
+  }
 };
 
 /* Lager en variabel som heter lastKey
@@ -88,34 +98,67 @@ Setter player sin x hastighet til 0
 Hva a knappen ble trykket og siste knappen som ble trykket er a så skal player sin x hastighet være -1,
 ellers hvis d knappen ble trykket og siste knappen som ble trykket er d så skal player sin x hastighet være 1*/
 
-let lastKey;
-
 function animate() {
   window.requestAnimationFrame(animate);
   c.fillStyle = "black";
   c.fillRect(0, 0, canvas.width, canvas.height);
   player.update();
   enemy.update();
+  /* Player sine bevegelser */
   player.velocity.x = 0;
-  if (keys.a.pressed && lastKey === "a") {
-    player.velocity.x = -1;
-  } else if (keys.d.pressed && lastKey === "d") {
-    player.velocity.x = 1;
+  if (keys.a.pressed && player.lastKey === "a") {
+    player.velocity.x = -5;
+  } else if (keys.d.pressed && player.lastKey === "d") {
+    player.velocity.x = 5;
   }
+
+  /* Motstander sine bevegelser */
+  enemy.velocity.x = 0;
+  if (keys.ArrowLeft.pressed && enemy.lastKey === "ArrowLeft") {
+    enemy.velocity.x = -5;
+  } else if (keys.ArrowRight.pressed && enemy.lastKey === "ArrowRight") {
+    enemy.velocity.x = 5;
+  }
+  
 }
 animate();
 
-/* Oppretter en lytter som lytter på når jeg trykker en tast på tastaturen, hvis jeg trykker på d-tasten så endrer den hastigheten til spilleren til 1,
-når jeg trykker på a-tasten så endrer den hastigheten til spilleren til -1, slik at spilleren går bak */
+/* Oppretter en lytter som lytter på når spilleren trykker en tast på tastaturen 
+
+Når spilleren trykker på d-tasten så setter den til at knappen d ble trykket som true og setter i tillegg at player sist trykket på knappen d
+
+Når spilleren trykker på a-tasten så setter den til at knappen a ble trykket som true og setter i tillegg at player sist trykket på knappen a 
+
+Når spilleren trykker på w-tasten så endrer hastigheten i y-verdien til -20, slik at spilleren hopper når han trykker på w-tasten
+
+Når motstanderen trykker på ArrowRight-tasten så setter den til at knappen ArrowRight ble trykket som true og setter i tillegg at motstanderen sist trykket på knappen ArrowRight
+
+Når motstanderen trykker på ArrowLeft-tasten så setter den til at knappen ArrowLeft ble trykket som true og setter i tillegg at motstanderen sist trykket på knappen d
+
+Når motstanderen trykker på ArrowUp-tasten så endrer hastigheten i y-verdien til -20, slik at motstanderen hopper når han trykker på w-tasten*/
 window.addEventListener("keydown", (event) => {
   switch (event.key) {
     case "d":
       keys.d.pressed = true;
-      lastKey = "d";
+      player.lastKey = "d";
       break;
     case "a":
       keys.a.pressed = true;
-      lastKey = "a";
+      player.lastKey = "a";
+      break;
+    case "w":
+      player.velocity.y = -20
+      break;
+    case "ArrowRight":
+      keys.ArrowRight.pressed = true;
+      enemy.lastKey = "ArrowRight"
+      break;
+    case "ArrowLeft":
+      keys.ArrowLeft.pressed = true;
+      enemy.lastKey = "ArrowLeft";
+      break;
+    case "ArrowUp":
+      enemy.velocity.y = -20
       break;
   }
 });
@@ -129,6 +172,22 @@ window.addEventListener("keyup", (event) => {
       break;
     case "a":
       keys.a.pressed = false;
+      break;
+    case "w":
+      keys.w.pressed = false;
+      break;
+  }
+
+  /* Motstanders knapper */
+  switch (event.key) {
+    case "ArrowRight":
+      keys.ArrowRight.pressed = false;
+      break;
+    case "ArrowLeft":
+      keys.ArrowLeft.pressed = false;
+      break;
+    case "ArrowUp":
+      keys.ArrowUp.pressed = false;
       break;
   }
 });
