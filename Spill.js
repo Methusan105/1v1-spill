@@ -79,7 +79,7 @@ class Sprite {
 variablen player lager en ny instans av Sprite og definerer posisjonen til den nye Spriten til 0,0 og velocityen til 0,0 */
 const player = new Sprite({
   position: {
-    x: 0,
+    x: canvas.height - 500 ,
     y: 0,
   },
   velocity: {
@@ -96,7 +96,7 @@ const player = new Sprite({
 variablen enemy lager en ny instans av Sprite og definerer posisjonen til den nye Spriten til 400, 100 og velocity til 0,0 */
 const enemy = new Sprite({
   position: {
-    x: 400,
+    x: canvas.height + 500,
     y: 100,
   },
   velocity: {
@@ -135,28 +135,7 @@ const keys = {
   },
 };
 
-/* 
-Lager en funksjon som heter animate
 
-Den ber nettleseren om å kjøre animate funksjonen ved neste anledning med koden: window.requestAnimationFrame(animate)
-
-Den fyller canvas elementet med fargen svart
-
-Oppdaterer posisjonen til player og enemy og tegner dem begge med den oppdaterte posisjon
-
-Setter player sin x hastighet til 0
-
-Hvis påstanden at a knappen ble trykket og siste knappen som ble trykket er a så skal player sin x hastighet settes på -5
-
-Ellers hvis påstanden d knappen ble trykket og siste knappen som ble trykket er d så skal player sin x hastighet settes på 5
-
-Setter enemy sin x hastighet til 0
-
-Hvis påstanden at ArrowLeft knappen ble trykket og siste knappen som ble trykket er ArrowLeft så skal enemy sin x hastighet settes på -5
-
-Ellers hvis påstanden ArrowRight knappen ble trykket og siste knappen som ble trykket er ArrowRight så skal enemy sin x hastighet settes på 5
-
-Kalles på animate() funksjonen for å starte animasjonsloopen */
 
 function rectangularCollision({ rectangle1, rectangle2 }) {
   return (
@@ -172,6 +151,9 @@ function rectangularCollision({ rectangle1, rectangle2 }) {
 
 function finneutWinner({ player, enemy, timerId }) {
   clearTimeout(timerId)
+  setTimeout(function () {
+    location.reload();
+  }, 3000);
   document.getElementById("displayText").style.display = "flex";
   if (player.health === enemy.health) {
     document.getElementById("displayText").innerHTML = "Tie";
@@ -195,6 +177,28 @@ function decreaseTimer() {
 }
 
 decreaseTimer();
+/* 
+Lager en funksjon som heter animate
+
+Den ber nettleseren om å kjøre animate funksjonen ved neste anledning med koden: window.requestAnimationFrame(animate)
+
+Den fyller canvas elementet med fargen svart
+
+Oppdaterer posisjonen til player og enemy og tegner dem begge med den oppdaterte posisjon
+
+Setter player sin x hastighet til 0
+
+Hvis påstanden at a knappen ble trykket og siste knappen som ble trykket er a så skal player sin x hastighet settes på -5
+
+Ellers hvis påstanden d knappen ble trykket og siste knappen som ble trykket er d så skal player sin x hastighet settes på 5
+
+Setter enemy sin x hastighet til 0
+
+Hvis påstanden at ArrowLeft knappen ble trykket og siste knappen som ble trykket er ArrowLeft så skal enemy sin x hastighet settes på -5
+
+Ellers hvis påstanden ArrowRight knappen ble trykket og siste knappen som ble trykket er ArrowRight så skal enemy sin x hastighet settes på 5
+
+Kalles på animate() funksjonen for å starte animasjonsloopen */
 function animate() {
   window.requestAnimationFrame(animate);
   c.fillStyle = "black";
@@ -217,7 +221,7 @@ function animate() {
     enemy.velocity.x = 5;
   }
 
-  /* Oppdage kollisjon */
+  /* Koden for at spilleren og motstanderen skal slå hverandre */
   if (
     rectangularCollision({
       rectangle1: player,
