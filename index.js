@@ -25,16 +25,16 @@ class Sprite {
     this.lastKey;
     this.attackBox = {
       position: {
-        x:this.position.x,
-        y:this.position.y
+        x: this.position.x,
+        y: this.position.y,
       },
       offset,
       width: 100,
       height: 50,
     };
     this.color = color;
-    this.isAttacking
-    this.health = 100
+    this.isAttacking;
+    this.health = 100;
   }
 
   /* Klassen har to forskjellige måter som er draw() og update() for å fylle et rektangel på canvas med fargen grønn */
@@ -43,14 +43,14 @@ class Sprite {
     c.fillRect(this.position.x, this.position.y, this.width, this.height);
 
     /* Angrip boks */
-    if(this.isAttacking){
-    c.fillStyle = "green";
-    c.fillRect(
-      this.attackBox.position.x,
-      this.attackBox.position.y,
-      this.attackBox.width,
-      this.attackBox.height
-    );
+    if (this.isAttacking) {
+      c.fillStyle = "green";
+      c.fillRect(
+        this.attackBox.position.x,
+        this.attackBox.position.y,
+        this.attackBox.width,
+        this.attackBox.height
+      );
     }
   }
 
@@ -59,20 +59,19 @@ class Sprite {
     og når den treffer bakken setter hastigheten til 0 ellers legges til verdien av gravity i y-verdien av velocity */
   update() {
     this.draw();
-    this.attackBox.position.x = this.position.x + this.attackBox.offset.x
-    this.attackBox.position.y = this.position.y
+    this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
+    this.attackBox.position.y = this.position.y;
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
     if (this.position.y + this.height + this.velocity.y >= canvas.height) {
       this.velocity.y = 0;
     } else this.velocity.y += gravity;
   }
-  attack(){
-    this.isAttacking = true
+  attack() {
+    this.isAttacking = true;
     setTimeout(() => {
-      this.isAttacking = false
-
-    }, 100)
+      this.isAttacking = false;
+    }, 100);
   }
 }
 
@@ -89,8 +88,8 @@ const player = new Sprite({
   },
   offset: {
     x: 0,
-    y: 0
-  }
+    y: 0,
+  },
 });
 
 /* Lager en variabelen som heter Enemy,
@@ -106,7 +105,7 @@ const enemy = new Sprite({
   },
   offset: {
     x: -50,
-    y: 0 
+    y: 0,
   },
   color: "blue",
 });
@@ -128,8 +127,11 @@ const keys = {
   ArrowLeft: {
     pressed: false,
   },
-  ArrowUp:{
-    pressed: false
+  ArrowUp: {
+    pressed: false,
+  },
+  s: {
+    pressed: false,
   },
 };
 
@@ -156,14 +158,43 @@ Ellers hvis påstanden ArrowRight knappen ble trykket og siste knappen som ble t
 
 Kalles på animate() funksjonen for å starte animasjonsloopen */
 
-function rectangularCollision({rectangle1, rectangle2}){
-  return(rectangle1.attackBox.position.x + rectangle1.attackBox.width >= rectangle2.position.x &&
-    rectangle1.attackBox.position.x <= rectangle2.position.x + rectangle2.width &&
-    rectangle1.attackBox.position.y + rectangle1.attackBox.height >= rectangle2.position.y &&
+function rectangularCollision({ rectangle1, rectangle2 }) {
+  return (
+    rectangle1.attackBox.position.x + rectangle1.attackBox.width >=
+      rectangle2.position.x &&
+    rectangle1.attackBox.position.x <=
+      rectangle2.position.x + rectangle2.width &&
+    rectangle1.attackBox.position.y + rectangle1.attackBox.height >=
+      rectangle2.position.y &&
     rectangle1.attackBox.position.y <= rectangle2.position.y + rectangle2.height
-    )
+  );
 }
 
+function finneutWinner({ player, enemy, timerId }) {
+  clearTimeout(timerId)
+  document.getElementById("displayText").style.display = "flex";
+  if (player.health === enemy.health) {
+    document.getElementById("displayText").innerHTML = "Tie";
+  } else if (player.health > enemy.health) {
+    document.getElementById("displayText").innerHTML = "Player 1 Wins";
+  } else if (player.health < enemy.health) {
+    document.getElementById("displayText").innerHTML = "Player 2 Wins";
+  }
+}
+let timer = 60;
+let timerId
+function decreaseTimer() {
+  timerId = setTimeout(decreaseTimer, 1000);
+  if (timer > 0) {
+    timer--;
+    document.getElementById("timer").innerHTML = timer;
+  }
+  if (timer === 0) {
+    finneutWinner({ player, enemy, timerId });
+  }
+}
+
+decreaseTimer();
 function animate() {
   window.requestAnimationFrame(animate);
   c.fillStyle = "black";
@@ -176,6 +207,8 @@ function animate() {
     player.velocity.x = -5;
   } else if (keys.d.pressed && player.lastKey === "d") {
     player.velocity.x = 5;
+  } else if (keys.s.pressed && player.lastKey === "s") {
+    player.velocity.y = 10;
   }
 
   /* Motstander sine bevegelser */
@@ -188,24 +221,29 @@ function animate() {
 
   /* Oppdage kollisjon */
   if (
-     rectangularCollision({
+    rectangularCollision({
       rectangle1: player,
-      rectangle2: enemy
-     }) && player.isAttacking
+      rectangle2: enemy,
+    }) &&
+    player.isAttacking
   ) {
-    player.isAttacking = false
-    enemy.health -= 20
-    document.getElementById("enemyHealth").style.width = enemy.health + "%"
+    player.isAttacking = false;
+    enemy.health -= 20;
+    document.getElementById("enemyHealth").style.width = enemy.health + "%";
   }
   if (
-     rectangularCollision({
+    rectangularCollision({
       rectangle1: enemy,
-      rectangle2: player
-     }) && enemy.isAttacking
+      rectangle2: player,
+    }) &&
+    enemy.isAttacking
   ) {
-    enemy.isAttacking = false
+    enemy.isAttacking = false;
     player.health -= 20;
     document.getElementById("playerHealth").style.width = player.health + "%";
+  }
+  if (enemy.health <= 0 || player.health <= 0) {
+    finneutWinner({ player, enemy, timerId });
   }
 }
 animate();
@@ -222,7 +260,8 @@ Når motstanderen trykker på ArrowRight-tasten så setter den til at knappen Ar
 
 Når motstanderen trykker på ArrowLeft-tasten så setter den til at knappen ArrowLeft ble trykket som true og setter i tillegg at motstanderen sist trykket på knappen d
 
-Når motstanderen trykker på ArrowUp-tasten så endrer hastigheten i y-verdien til -20, slik at motstanderen hopper når han trykker på w-tasten*/
+Når motstanderen trykker på ArrowUp-tasten så endrer hastigheten i y-verdien til -20, slik at motstanderen hopper når han trykker på w-tasten
+*/
 window.addEventListener("keydown", (event) => {
   switch (event.key) {
     case "d":
@@ -233,12 +272,16 @@ window.addEventListener("keydown", (event) => {
       keys.a.pressed = true;
       player.lastKey = "a";
       break;
+    case "s":
+      keys.s.pressed = true;
+      player.lastKey = "s";
+      break;
     case "w":
       player.velocity.y = -20;
       break;
     case " ":
-      player.attack()
-      break
+      player.attack();
+      break;
     case "ArrowRight":
       keys.ArrowRight.pressed = true;
       enemy.lastKey = "ArrowRight";
@@ -251,7 +294,7 @@ window.addEventListener("keydown", (event) => {
       enemy.velocity.y = -20;
       break;
     case "ArrowDown":
-      enemy.isAttacking = true
+      enemy.isAttacking = true;
       break;
   }
 });
@@ -280,6 +323,9 @@ window.addEventListener("keyup", (event) => {
       break;
     case "w":
       keys.w.pressed = false;
+      break;
+    case "s":
+      keys.s.pressed = false;
       break;
   }
 
