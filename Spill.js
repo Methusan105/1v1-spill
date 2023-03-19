@@ -207,8 +207,6 @@ function animate() {
     player.velocity.x = -5;
   } else if (keys.d.pressed && player.lastKey === "d") {
     player.velocity.x = 5;
-  } else if (keys.s.pressed && player.lastKey === "s") {
-    player.velocity.y = 10;
   }
 
   /* Motstander sine bevegelser */
@@ -271,10 +269,6 @@ window.addEventListener("keydown", (event) => {
     case "a":
       keys.a.pressed = true;
       player.lastKey = "a";
-      break;
-    case "s":
-      keys.s.pressed = true;
-      player.lastKey = "s";
       break;
     case "w":
       player.velocity.y = -20;
