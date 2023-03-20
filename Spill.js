@@ -79,7 +79,7 @@ class Sprite {
 variablen player lager en ny instans av Sprite og definerer posisjonen til den nye Spriten til 0,0 og velocityen til 0,0 */
 const player = new Sprite({
   position: {
-    x: canvas.height - 500 ,
+    x: canvas.height - 500,
     y: 0,
   },
   velocity: {
@@ -110,7 +110,8 @@ const enemy = new Sprite({
   color: "blue",
 });
 
-/* Lager funksjonen keys */
+/* Lager funksjonen keys 
+Lager*/
 const keys = {
   a: {
     pressed: false,
@@ -135,8 +136,8 @@ const keys = {
   },
 };
 
-
-
+/* Lager en funksjon som heter rectangularCollision og har rectangle1, rectangle2 som parameter
+ */
 function rectangularCollision({ rectangle1, rectangle2 }) {
   return (
     rectangle1.attackBox.position.x + rectangle1.attackBox.width >=
@@ -148,9 +149,21 @@ function rectangularCollision({ rectangle1, rectangle2 }) {
     rectangle1.attackBox.position.y <= rectangle2.position.y + rectangle2.height
   );
 }
+/* Lager en funksjon som heter bestemmerWinner og har player, enemy, timerId som parameter 
 
-function finneutWinner({ player, enemy, timerId }) {
-  clearTimeout(timerId)
+Den sletter vekk timeouten timerId
+
+Etter 3 sekunder så refresher den nettsiden for å få spillet på nytt til å starte automatisk
+
+Den søker gjennom hele html dokumentet og finner en Id som heter displayText og legger til display element til flex i css
+
+Hvis Player sin helse er lik motstanderen sin helse så søker den gjennom hele html dokumenter og finner displayText og skriver i den Tie som betyr uavgjort
+
+Ellers hvis Playeren sin helse er mer enn motstanderen sin helse så vil den skrive i HTML dokumentet at Player 1 vant
+
+Ellers hvis Motstanderen sin helse er mer enn playeren sin helse så vil den skrive i HTML dokumentet at Player 2 som vant som er nemlig motstanderen */
+function bestemmerWinner({ player, enemy, timerId }) {
+  clearTimeout(timerId);
   setTimeout(function () {
     location.reload();
   }, 3000);
@@ -163,8 +176,21 @@ function finneutWinner({ player, enemy, timerId }) {
     document.getElementById("displayText").innerHTML = "Player 2 Wins";
   }
 }
+/* Lager en variabel som heter timer og gir det tallet 60
+
+Lager en variabel som heter timerId men gir ingen verdi til den
+
+Lager en funksjon som heter decreaseTimer
+
+Setter opp en timer og kaller til decreaseTimer hver sekund
+
+Hvis timer er mer enn 0 så skal den subtrahere med -1 
+
+Etterpå søker den gjennom hele HTML dokumentet etter id-en timer og skriver inn i HTML-filen den nye timer variablen
+
+Hvis timer er 0 så kjører den funksjonen bestemmerWinner og viser hvem som vant */
 let timer = 60;
-let timerId
+let timerId;
 function decreaseTimer() {
   timerId = setTimeout(decreaseTimer, 1000);
   if (timer > 0) {
@@ -172,15 +198,16 @@ function decreaseTimer() {
     document.getElementById("timer").innerHTML = timer;
   }
   if (timer === 0) {
-    finneutWinner({ player, enemy, timerId });
+    bestemmerWinner({ player, enemy, timerId });
   }
 }
 
 decreaseTimer();
+
 /* 
 Lager en funksjon som heter animate
 
-Den ber nettleseren om å kjøre animate funksjonen ved neste anledning med koden: window.requestAnimationFrame(animate)
+Den ber nettleseren om å kjøre animate funksjonen
 
 Den fyller canvas elementet med fargen svart
 
@@ -205,7 +232,12 @@ function animate() {
   c.fillRect(0, 0, canvas.width, canvas.height);
   player.update();
   enemy.update();
-  /* Player sine bevegelser */
+
+  /* Setter player sin hastighet til 0
+
+  Hvis nøkkelen a er presset og hvis sisteknappen som presset er a så skal den sette player sin hastighet til -5 
+
+  ellers hvis nøkkelen d er presset og hvis sisteknappen som presset er d så skal den sette player sin hastighet til 5*/
   player.velocity.x = 0;
   if (keys.a.pressed && player.lastKey === "a") {
     player.velocity.x = -5;
@@ -213,7 +245,15 @@ function animate() {
     player.velocity.x = 5;
   }
 
-  /* Motstander sine bevegelser */
+  /* Setter motstanderen sin hastighet til 0
+
+  Hvis pil venstre knappen er trykket og motstanderens sin siste knapp som ble trykket er pil venstre
+
+  så skal den sette motstanderen sin hastighet til -5
+
+  ellers hvis pil høyre er trykket og motstanderens sin siste knapp som ble trykket er pil høyre 
+
+  så skal den sette motstanderen sin hastighet til 5 */
   enemy.velocity.x = 0;
   if (keys.ArrowLeft.pressed && enemy.lastKey === "ArrowLeft") {
     enemy.velocity.x = -5;
@@ -245,7 +285,7 @@ function animate() {
     document.getElementById("playerHealth").style.width = player.health + "%";
   }
   if (enemy.health <= 0 || player.health <= 0) {
-    finneutWinner({ player, enemy, timerId });
+    bestemmerWinner({ player, enemy, timerId });
   }
 }
 animate();
@@ -263,7 +303,8 @@ Når motstanderen trykker på ArrowRight-tasten så setter den til at knappen Ar
 Når motstanderen trykker på ArrowLeft-tasten så setter den til at knappen ArrowLeft ble trykket som true og setter i tillegg at motstanderen sist trykket på knappen d
 
 Når motstanderen trykker på ArrowUp-tasten så endrer hastigheten i y-verdien til -20, slik at motstanderen hopper når han trykker på w-tasten
-*/
+
+Når motstanderen trykker på ArrowDown-tasten så setter den at motstanderen angriper til sann */
 window.addEventListener("keydown", (event) => {
   switch (event.key) {
     case "d":

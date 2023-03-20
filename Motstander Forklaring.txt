@@ -1,0 +1,7 @@
+1. Første "if"-setning sjekker om det er en kollisjon mellom spillerens og fiendens rektangler og om spilleren angriper. Hvis begge vilkårene er oppfylt, blir spillerens angrep stoppet, fiendens helse reduseres med 20, og fiendens helse vises i en HTML-element med ID "enemyHealth".
+
+2. Andre "if"-setning sjekker om det er en kollisjon mellom fiendens og spillerens rektangler og om fienden angriper. Hvis begge vilkårene er oppfylt, blir fiendens angrep stoppet, spillerens helse reduseres med 10, og spillerens helse vises i en HTML-element med ID "playerHealth".
+
+3. Tredje "if"-setning sjekker om fiendens helse er mindre enn eller lik 0. Hvis dette vilkåret er oppfylt, blir fienden fjernet fra spillet, og spilleren får 100 poeng som legges til spillerens poengsum. Poengsummen vises i en HTML-element med ID "score".
+
+4. Fjerde "if"-setning sjekker om spillerens helse er mindre enn eller lik 0. Hvis dette vilkåret er oppfylt, blir spillet avsluttet, og en melding om at spilleren har tapt vises i en HTML-element ID "gameOver".
