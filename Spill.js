@@ -5,8 +5,8 @@ const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
 
 /* Setter canvas sin lengde og bredde med bredden på skjermen og lengden på skjermen */
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+canvas.width = 1024;
+canvas.height = 576;
 
 /* Denne koden tegner en firkant, x og y verdien er satt til 0, mens bredden og høyden er satt til canvas.width og height */
 c.fillRect(0, 0, canvas.width, canvas.height);
@@ -15,69 +15,17 @@ c.fillRect(0, 0, canvas.width, canvas.height);
 const gravity = 0.7;
 
 /* Lager en klasse som heter Sprite */
-class Sprite {
-  /* Lager en konstruktur som tar inn objekt med to egenskaper som: position og velocity */
-  constructor({ position, velocity, color = "red", offset }) {
-    this.position = position;
-    this.velocity = velocity;
-    this.width = 50;
-    this.height = 150;
-    this.lastKey;
-    this.attackBox = {
-      position: {
-        x: this.position.x,
-        y: this.position.y,
-      },
-      offset,
-      width: 100,
-      height: 50,
-    };
-    this.color = color;
-    this.isAttacking;
-    this.health = 100;
-  }
 
-  /* Klassen har to forskjellige måter som er draw() og update() for å fylle et rektangel på canvas med fargen grønn */
-  draw() {
-    c.fillStyle = this.color;
-    c.fillRect(this.position.x, this.position.y, this.width, this.height);
-
-    /* Angrip boks */
-    if (this.isAttacking) {
-      c.fillStyle = "green";
-      c.fillRect(
-        this.attackBox.position.x,
-        this.attackBox.position.y,
-        this.attackBox.width,
-        this.attackBox.height
-      );
-    }
-  }
-
-  /* Oppdaterer objektets posisjon basert på hastigheten til objektene, 
-    den sjekker i tillegg om objekten har nådd bakken på canvas, 
-    og når den treffer bakken setter hastigheten til 0 ellers legges til verdien av gravity i y-verdien av velocity */
-  update() {
-    this.draw();
-    this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
-    this.attackBox.position.y = this.position.y;
-    this.position.x += this.velocity.x;
-    this.position.y += this.velocity.y;
-    if (this.position.y + this.height + this.velocity.y >= canvas.height) {
-      this.velocity.y = 0;
-    } else this.velocity.y += gravity;
-  }
-  attack() {
-    this.isAttacking = true;
-    setTimeout(() => {
-      this.isAttacking = false;
-    }, 100);
-  }
-}
-
+const background = new Sprite({
+  position:{
+    x: 0,
+    y: 0 
+  },
+  imageSrc: "./Tiny Forest Pack/paralax/forest_paralax.jpg"
+})
 /* Lager en variabel som heter player, 
 variablen player lager en ny instans av Sprite og definerer posisjonen til den nye Spriten til 0,0 og velocityen til 0,0 */
-const player = new Sprite({
+const player = new Fighter({
   position: {
     x: canvas.height - 500,
     y: 0,
@@ -94,9 +42,9 @@ const player = new Sprite({
 
 /* Lager en variabelen som heter Enemy,
 variablen enemy lager en ny instans av Sprite og definerer posisjonen til den nye Spriten til 400, 100 og velocity til 0,0 */
-const enemy = new Sprite({
+const enemy = new Fighter({
   position: {
-    x: canvas.height + 500,
+    x: 750,
     y: 100,
   },
   velocity: {
@@ -136,72 +84,6 @@ const keys = {
   },
 };
 
-/* Lager en funksjon som heter rectangularCollision og har rectangle1, rectangle2 som parameter
- */
-function rectangularCollision({ rectangle1, rectangle2 }) {
-  return (
-    rectangle1.attackBox.position.x + rectangle1.attackBox.width >=
-      rectangle2.position.x &&
-    rectangle1.attackBox.position.x <=
-      rectangle2.position.x + rectangle2.width &&
-    rectangle1.attackBox.position.y + rectangle1.attackBox.height >=
-      rectangle2.position.y &&
-    rectangle1.attackBox.position.y <= rectangle2.position.y + rectangle2.height
-  );
-}
-/* Lager en funksjon som heter bestemmerWinner og har player, enemy, timerId som parameter 
-
-Den sletter vekk timeouten timerId
-
-Etter 3 sekunder så refresher den nettsiden for å få spillet på nytt til å starte automatisk
-
-Den søker gjennom hele html dokumentet og finner en Id som heter displayText og legger til display element til flex i css
-
-Hvis Player sin helse er lik motstanderen sin helse så søker den gjennom hele html dokumenter og finner displayText og skriver i den Tie som betyr uavgjort
-
-Ellers hvis Playeren sin helse er mer enn motstanderen sin helse så vil den skrive i HTML dokumentet at Player 1 vant
-
-Ellers hvis Motstanderen sin helse er mer enn playeren sin helse så vil den skrive i HTML dokumentet at Player 2 som vant som er nemlig motstanderen */
-function bestemmerWinner({ player, enemy, timerId }) {
-  clearTimeout(timerId);
-  setTimeout(function () {
-    location.reload();
-  }, 3000);
-  document.getElementById("displayText").style.display = "flex";
-  if (player.health === enemy.health) {
-    document.getElementById("displayText").innerHTML = "Tie";
-  } else if (player.health > enemy.health) {
-    document.getElementById("displayText").innerHTML = "Player 1 Wins";
-  } else if (player.health < enemy.health) {
-    document.getElementById("displayText").innerHTML = "Player 2 Wins";
-  }
-}
-/* Lager en variabel som heter timer og gir det tallet 60
-
-Lager en variabel som heter timerId men gir ingen verdi til den
-
-Lager en funksjon som heter decreaseTimer
-
-Setter opp en timer og kaller til decreaseTimer hver sekund
-
-Hvis timer er mer enn 0 så skal den subtrahere med -1 
-
-Etterpå søker den gjennom hele HTML dokumentet etter id-en timer og skriver inn i HTML-filen den nye timer variablen
-
-Hvis timer er 0 så kjører den funksjonen bestemmerWinner og viser hvem som vant */
-let timer = 60;
-let timerId;
-function decreaseTimer() {
-  timerId = setTimeout(decreaseTimer, 1000);
-  if (timer > 0) {
-    timer--;
-    document.getElementById("timer").innerHTML = timer;
-  }
-  if (timer === 0) {
-    bestemmerWinner({ player, enemy, timerId });
-  }
-}
-
 decreaseTimer();
 
 /* 
@@ -230,6 +112,7 @@ function animate() {
   window.requestAnimationFrame(animate);
   c.fillStyle = "black";
   c.fillRect(0, 0, canvas.width, canvas.height);
+  background.update();
   player.update();
   enemy.update();
 
