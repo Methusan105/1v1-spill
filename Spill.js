@@ -17,11 +17,20 @@ const gravity = 0.7;
 /* Lager en klasse som heter Sprite */
 
 const background = new Sprite({
-  position:{
+  position: {
     x: 0,
-    y: 0 
+    y: 0
   },
   imageSrc: "./Tiny Forest Pack/paralax/forest_paralax.jpg"
+})
+const shop = new Sprite({
+  position: {
+    x: 600,
+    y: 175
+  },
+  imageSrc: "./Tiny Forest Pack/shop.png",
+  scale: 2.75,
+  framesMax: 6,
 })
 /* Lager en variabel som heter player, 
 variablen player lager en ny instans av Sprite og definerer posisjonen til den nye Spriten til 0,0 og velocityen til 0,0 */
@@ -44,7 +53,7 @@ const player = new Fighter({
 variablen enemy lager en ny instans av Sprite og definerer posisjonen til den nye Spriten til 400, 100 og velocity til 0,0 */
 const enemy = new Fighter({
   position: {
-    x: 750,
+    x: 450,
     y: 100,
   },
   velocity: {
@@ -113,6 +122,7 @@ function animate() {
   c.fillStyle = "black";
   c.fillRect(0, 0, canvas.width, canvas.height);
   background.update();
+  shop.update()
   player.update();
   enemy.update();
 
