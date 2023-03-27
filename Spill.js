@@ -12,7 +12,7 @@ canvas.height = 576;
 c.fillRect(0, 0, canvas.width, canvas.height);
 
 /* Lager en konstant med navnet gravity og setter den på 0.7 */
-const gravity = 0.7;
+const gravity = 0.3;
 
 /* Lager en klasse som heter Sprite */
 
@@ -36,7 +36,7 @@ const shop = new Sprite({
 variablen player lager en ny instans av Sprite og definerer posisjonen til den nye Spriten til 0,0 og velocityen til 0,0 */
 const player = new Fighter({
   position: {
-    x: canvas.height - 500,
+    x: 0,
     y: 0,
   },
   velocity: {
@@ -133,9 +133,9 @@ function animate() {
   ellers hvis nøkkelen d er presset og hvis sisteknappen som presset er d så skal den sette player sin hastighet til 5*/
   player.velocity.x = 0;
   if (keys.a.pressed && player.lastKey === "a") {
-    player.velocity.x = -5;
+    player.velocity.x = -3;
   } else if (keys.d.pressed && player.lastKey === "d") {
-    player.velocity.x = 5;
+    player.velocity.x = 3;
   }
 
   /* Setter motstanderen sin hastighet til 0
@@ -149,9 +149,9 @@ function animate() {
   så skal den sette motstanderen sin hastighet til 5 */
   enemy.velocity.x = 0;
   if (keys.ArrowLeft.pressed && enemy.lastKey === "ArrowLeft") {
-    enemy.velocity.x = -5;
+    enemy.velocity.x = -3;
   } else if (keys.ArrowRight.pressed && enemy.lastKey === "ArrowRight") {
-    enemy.velocity.x = 5;
+    enemy.velocity.x = 3;
   }
 
   /* Koden for at spilleren og motstanderen skal slå hverandre */
@@ -209,7 +209,7 @@ window.addEventListener("keydown", (event) => {
       player.lastKey = "a";
       break;
     case "w":
-      player.velocity.y = -20;
+      player.velocity.y = -12;
       break;
     case " ":
       player.attack();
@@ -223,7 +223,7 @@ window.addEventListener("keydown", (event) => {
       enemy.lastKey = "ArrowLeft";
       break;
     case "ArrowUp":
-      enemy.velocity.y = -20;
+      enemy.velocity.y = -12;
       break;
     case "ArrowDown":
       enemy.isAttacking = true;
