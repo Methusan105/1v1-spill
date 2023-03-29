@@ -1,6 +1,6 @@
 class Sprite {
   /* Lager en konstruktur som tar inn objekt med to egenskaper som: position og velocity */
-  constructor({ position, imageSrc, scale = 1, framesMax = 1 }) {
+  constructor({ position, imageSrc, scale = 1, framesMax = 1, framesCurrent = 0, framesElapsed = 0, framesHold = 5 }) {
     this.position = position;
     this.width = 50;
     this.height = 150;
@@ -8,9 +8,9 @@ class Sprite {
     this.image.src = imageSrc
     this.scale = scale
     this.framesMax = framesMax
-    this.framesCurrent = 0
-    this.framesElapsed = 0
-    this.framesHold = 10
+    this.framesCurrent = framesCurrent
+    this.framesElapsed = framesElapsed
+    this.framesHold = framesHold
   }
 
   /* Klassen har to forskjellige måter som er draw() og update() for å fylle et rektangel på canvas med fargen grønn */
@@ -42,10 +42,19 @@ class Sprite {
   }
 }
 }
-class Fighter {
+class Fighter extends Sprite{
   /* Lager en konstruktur som tar inn objekt med to egenskaper som: position og velocity */
-  constructor({ position, velocity, color = "red", offset }) {
-    this.position = position;
+  constructor({ position, velocity, color = "red", offset, imageSrc, scale = 1, framesMax = 1, framesCurrent = 0, framesElapsed = 0, framesHold = 5 }) {
+    super({
+      position,
+      imageSrc,
+      scale,
+      framesMax,
+      framesCurrent, 
+      framesElapsed,
+      framesHold
+    })
+    
     this.velocity = velocity;
     this.width = 50;
     this.height = 150;
@@ -62,23 +71,7 @@ class Fighter {
     this.color = color;
     this.isAttacking;
     this.health = 100;
-  }
-
-  /* Klassen har to forskjellige måter som er draw() og update() for å fylle et rektangel på canvas med fargen grønn */
-  draw() {
-    c.fillStyle = this.color;
-    c.fillRect(this.position.x, this.position.y, this.width, this.height);
-
-    /* Angrip boks */
-    if (this.isAttacking) {
-      c.fillStyle = "green";
-      c.fillRect(
-        this.attackBox.position.x,
-        this.attackBox.position.y,
-        this.attackBox.width,
-        this.attackBox.height
-      );
-    }
+    
   }
 
   /* Oppdaterer objektets posisjon basert på hastigheten til objektene, 

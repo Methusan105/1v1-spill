@@ -47,6 +47,7 @@ const player = new Fighter({
     x: 0,
     y: 0,
   },
+  imageSrc: "./Kid Knight Player/Player_Idle.png",
 });
 
 /* Lager en variabelen som heter Enemy,
