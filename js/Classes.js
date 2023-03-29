@@ -1,6 +1,6 @@
 class Sprite {
   /* Lager en konstruktur som tar inn objekt med to egenskaper som: position og velocity */
-  constructor({ position, imageSrc, scale = 1, framesMax = 1, framesCurrent = 0, framesElapsed = 0, framesHold = 5 }) {
+  constructor({ position, imageSrc, scale = 1, framesMax = 1, offset = { x: 0, y: 0 } }) {
     this.position = position;
     this.width = 50;
     this.height = 150;
@@ -8,9 +8,10 @@ class Sprite {
     this.image.src = imageSrc
     this.scale = scale
     this.framesMax = framesMax
-    this.framesCurrent = framesCurrent
-    this.framesElapsed = framesElapsed
-    this.framesHold = framesHold
+    this.framesCurrent = 0
+    this.framesElapsed = 0
+    this.framesHold = 5
+    this.offset = offset
   }
 
   /* Klassen har to forskjellige måter som er draw() og update() for å fylle et rektangel på canvas med fargen grønn */
@@ -21,38 +22,38 @@ class Sprite {
       0,
       this.image.width / this.framesMax ,
       this.image.height,
-      this.position.x, 
-      this.position.y, 
+      this.position.x - this.offset.x, 
+      this.position.y - this.offset.y, 
       (this.image.width / this.framesMax) * this.scale, 
       this.image.height * this.scale)
   }
-
+  animateFrames(){
+    this.framesElapsed++
+    if (this.framesElapsed % this.framesHold === 0) {
+      if (this.framesCurrent < this.framesMax - 1) {
+        this.framesCurrent++
+      } else {
+        this.framesCurrent = 0
+      }
+    }
+  }
   /* Oppdaterer objektets posisjon basert på hastigheten til objektene, 
     den sjekker i tillegg om objekten har nådd bakken på canvas, 
     og når den treffer bakken setter hastigheten til 0 ellers legges til verdien av gravity i y-verdien av velocity */
   update() {
     this.draw();
-    this.framesElapsed++
-    if (this.framesElapsed % this.framesHold === 0){
-    if (this.framesCurrent < this.framesMax - 1){
-    this.framesCurrent++
-    } else {
-      this.framesCurrent = 0
-    }
+    this.animateFrames();
   }
-}
 }
 class Fighter extends Sprite{
   /* Lager en konstruktur som tar inn objekt med to egenskaper som: position og velocity */
-  constructor({ position, velocity, color = "red", offset, imageSrc, scale = 1, framesMax = 1, framesCurrent = 0, framesElapsed = 0, framesHold = 5 }) {
+  constructor({ position, velocity, color = "red", offset, imageSrc, scale = 1, framesMax = 1, }) {
     super({
       position,
       imageSrc,
       scale,
       framesMax,
-      framesCurrent, 
-      framesElapsed,
-      framesHold
+      offset
     })
     
     this.velocity = velocity;
@@ -79,6 +80,7 @@ class Fighter extends Sprite{
     og når den treffer bakken setter hastigheten til 0 ellers legges til verdien av gravity i y-verdien av velocity */
   update() {
     this.draw();
+    this.animateFrames()
     this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
     this.attackBox.position.y = this.position.y;
     this.position.x += this.velocity.x;

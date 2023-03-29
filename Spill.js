@@ -47,7 +47,13 @@ const player = new Fighter({
     x: 0,
     y: 0,
   },
-  imageSrc: "./Kid Knight Player/Player_Idle.png",
+  imageSrc: "./Martial Hero 3/Sprite/Idle.png",
+  framesMax: 10,
+  scale: 4,
+  offset: {
+    x: 200,
+    y: 170
+  }
 });
 
 /* Lager en variabelen som heter Enemy,
@@ -125,7 +131,7 @@ function animate() {
   background.update();
   shop.update()
   player.update();
-  enemy.update();
+/*   enemy.update(); */
 
   /* Setter player sin hastighet til 0
 
