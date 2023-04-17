@@ -47,7 +47,7 @@ class Sprite {
 }
 class Fighter extends Sprite{
   /* Lager en konstruktur som tar inn objekt med to egenskaper som: position og velocity */
-  constructor({ position, velocity, color = "red", offset, imageSrc, scale = 1, framesMax = 1, }) {
+  constructor({ position, velocity, color = "red", offset = { x: 0, y: 0 }, imageSrc, scale = 1, framesMax = 1, sprites }) {
     super({
       position,
       imageSrc,
@@ -72,7 +72,16 @@ class Fighter extends Sprite{
     this.color = color;
     this.isAttacking;
     this.health = 100;
-    
+    this.framesCurrent = 0
+    this.framesElapsed = 0
+    this.framesHold = 5
+    this.sprites = sprites
+
+    for (const sprite in this.sprites){
+      sprites[sprite].image = new Image()
+      sprites[sprite].image.src = sprites[sprite].imageSrc
+    }
+    console.log (this.sprites)
   }
 
   /* Oppdaterer objektets posisjon basert på hastigheten til objektene, 

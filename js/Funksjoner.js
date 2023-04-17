@@ -26,9 +26,6 @@ Ellers hvis Playeren sin helse er mer enn motstanderen sin helse så vil den skr
 Ellers hvis Motstanderen sin helse er mer enn playeren sin helse så vil den skrive i HTML dokumentet at Player 2 som vant som er nemlig motstanderen */
 function bestemmerWinner({ player, enemy, timerId }) {
   clearTimeout(timerId);
-  setTimeout(function () {
-    location.reload();
-  }, 3000);
   document.getElementById("displayText").style.display = "flex";
   if (player.health === enemy.health) {
     document.getElementById("displayText").innerHTML = "Tie";

@@ -53,6 +53,16 @@ const player = new Fighter({
   offset: {
     x: 200,
     y: 170
+  },
+  sprites:{
+    idle:{
+      imageSrc: "./Martial Hero 3/Sprite/Idle.png",
+      framesMax: 10
+    },
+    run:{
+      imageSrc: "./Martial Hero 3/Sprite/Run.png",
+      framesMax: 8
+    }
   }
 });
 
@@ -139,10 +149,18 @@ function animate() {
 
   ellers hvis nøkkelen d er presset og hvis sisteknappen som presset er d så skal den sette player sin hastighet til 5*/
   player.velocity.x = 0;
+  player.image = player.sprites.idle.image
   if (keys.a.pressed && player.lastKey === "a") {
     player.velocity.x = -3;
+    player.image = player.sprites.run.image
+    player.framesMax = 8
   } else if (keys.d.pressed && player.lastKey === "d") {
     player.velocity.x = 3;
+    player.image = player.sprites.run.image
+    player.framesMax = 8
+  }
+  else{
+    player.framesMax = 10
   }
 
   /* Setter motstanderen sin hastighet til 0
