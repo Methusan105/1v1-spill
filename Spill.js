@@ -16,14 +16,14 @@ const gravity = 0.3;
 
 /* Lager en klasse som heter Sprite */
 
-const background = new Sprite({
+const background = new Tegner({
   position: {
     x: 0,
     y: 0
   },
   imageSrc: "./Tiny Forest Pack/paralax/forest_paralax.jpg"
 })
-const shop = new Sprite({
+const shop = new Tegner({
   position: {
     x: 600,
     y: 175
@@ -34,7 +34,7 @@ const shop = new Sprite({
 })
 /* Lager en variabel som heter player, 
 variablen player lager en ny instans av Sprite og definerer posisjonen til den nye Spriten til 0,0 og velocityen til 0,0 */
-const player = new Fighter({
+const player = new Kamp({
   position: {
     x: 0,
     y: 0,
@@ -62,13 +62,17 @@ const player = new Fighter({
     run:{
       imageSrc: "./Martial Hero 3/Sprite/Run.png",
       framesMax: 8
+    },
+    jump:{
+      imageSrc: "./Martial Hero 3/Sprite/Going Up.png",
+      framesMax: 3
     }
   }
 });
 
 /* Lager en variabelen som heter Enemy,
 variablen enemy lager en ny instans av Sprite og definerer posisjonen til den nye Spriten til 400, 100 og velocity til 0,0 */
-const enemy = new Fighter({
+const enemy = new Kamp({
   position: {
     x: 450,
     y: 100,
@@ -153,14 +157,16 @@ function animate() {
   if (keys.a.pressed && player.lastKey === "a") {
     player.velocity.x = -3;
     player.image = player.sprites.run.image
-    player.framesMax = 8
+    player.framesMax = player.sprites.run.framesMax
   } else if (keys.d.pressed && player.lastKey === "d") {
     player.velocity.x = 3;
     player.image = player.sprites.run.image
-    player.framesMax = 8
-  }
-  else{
-    player.framesMax = 10
+    player.framesMax = player.sprites.run.framesMax
+  } else if (keys.w.pressed && player.lastKey=== "w"){
+    player.image = player.sprites.jump.image
+    player.framesMax = player.sprites.jump.framesMax
+  } else {
+    player.framesMax = player.sprites.idle.framesMax
   }
 
   /* Setter motstanderen sin hastighet til 0
@@ -234,6 +240,8 @@ window.addEventListener("keydown", (event) => {
       player.lastKey = "a";
       break;
     case "w":
+      keys.w.pressed = true;
+      player.lastKey = "w"
       player.velocity.y = -12;
       break;
     case " ":

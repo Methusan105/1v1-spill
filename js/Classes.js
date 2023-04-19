@@ -1,4 +1,4 @@
-class Sprite {
+class Tegner {
   /* Lager en konstruktur som tar inn objekt med to egenskaper som: position og velocity */
   constructor({ position, imageSrc, scale = 1, framesMax = 1, offset = { x: 0, y: 0 } }) {
     this.position = position;
@@ -45,7 +45,7 @@ class Sprite {
     this.animateFrames();
   }
 }
-class Fighter extends Sprite{
+class Kamp extends Tegner{
   /* Lager en konstruktur som tar inn objekt med to egenskaper som: position og velocity */
   constructor({ position, velocity, color = "red", offset = { x: 0, y: 0 }, imageSrc, scale = 1, framesMax = 1, sprites }) {
     super({
