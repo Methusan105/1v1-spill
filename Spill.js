@@ -66,6 +66,14 @@ const player = new Kamp({
     jump:{
       imageSrc: "./Martial Hero 3/Sprite/Going Up.png",
       framesMax: 3
+    },
+    fall:{
+      imageSrc: "./Martial Hero 3/Sprite/Going Down.png",
+      framesMax: 3
+    },
+    attack1:{
+      imageSrc: "./Martial Hero 3/Sprite/Attack1.png",
+      framesMax: 7
     }
   }
 });
@@ -81,11 +89,40 @@ const enemy = new Kamp({
     x: 0,
     y: 0,
   },
+  color: "blue",
   offset: {
     x: -50,
     y: 0,
   },
-  color: "blue",
+  imageSrc: "./Martial Hero 3/Sprite/Idle.png",
+  framesMax: 10,
+  scale: 4,
+  offset: {
+    x: 200,
+    y: 170
+  },
+  sprites:{
+    idle:{
+      imageSrc: "./Martial Hero 3/Sprite/Idle.png",
+      framesMax: 10
+    },
+    run:{
+      imageSrc: "./Martial Hero 3/Sprite/Run.png",
+      framesMax: 8
+    },
+    jump:{
+      imageSrc: "./Martial Hero 3/Sprite/Going Up.png",
+      framesMax: 3
+    },
+    fall:{
+      imageSrc: "./Martial Hero 3/Sprite/Going Down.png",
+      framesMax: 3
+    },
+    attack1:{
+      imageSrc: "./Martial Hero 3/Sprite/Attack1.png",
+      framesMax: 7
+    }
+  } 
 });
 
 /* Lager funksjonen keys 
@@ -153,20 +190,19 @@ function animate() {
 
   ellers hvis nøkkelen d er presset og hvis sisteknappen som presset er d så skal den sette player sin hastighet til 5*/
   player.velocity.x = 0;
-  player.image = player.sprites.idle.image
   if (keys.a.pressed && player.lastKey === "a") {
     player.velocity.x = -3;
-    player.image = player.sprites.run.image
-    player.framesMax = player.sprites.run.framesMax
+    player.switchSprite("run")
   } else if (keys.d.pressed && player.lastKey === "d") {
     player.velocity.x = 3;
-    player.image = player.sprites.run.image
-    player.framesMax = player.sprites.run.framesMax
-  } else if (keys.w.pressed && player.lastKey=== "w"){
-    player.image = player.sprites.jump.image
-    player.framesMax = player.sprites.jump.framesMax
+    player.switchSprite("run")
   } else {
-    player.framesMax = player.sprites.idle.framesMax
+    player.switchSprite("idle")
+  }
+  if (player.velocity.y < 0){
+    player.switchSprite("jump")
+  } else if (player.velocity.y > 0){
+    player.switchSprite("fall")
   }
 
   /* Setter motstanderen sin hastighet til 0
