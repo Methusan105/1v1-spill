@@ -20,7 +20,7 @@ const gravity = 0.3
 /* Denne koden oppretter en ny instans av klassen bakgrunn som er lagd i klasser js filen,
 og lagrer den i en variabel som er kalt for background.
 Koden nedenfor inneholder et argument til bakgrunn konstruktøren. 
-Denne objektet inneholder egenskapen som posisjon og bildekil de.
+Denne objektet inneholder egenskapen som posisjon og bildekilde.
  */
 const background = new Bakgrunn({
   position: {
