@@ -47,7 +47,16 @@ class Tegner {
 }
 class Kamp extends Tegner{
   /* Lager en konstruktur som tar inn objekt med to egenskaper som: position og velocity */
-  constructor({ position, velocity, color = "red", offset = { x: 0, y: 0 }, imageSrc, scale = 1, framesMax = 1, sprites }) {
+  constructor({ 
+    position,
+    velocity, 
+    color = "red", 
+    offset = { x: 0, y: 0 }, 
+    imageSrc, 
+    scale = 1, 
+    framesMax = 1, 
+    sprites, 
+    attackBox ={offset: {}, width: undefined, height: undefined} }) {
     super({
       position,
       imageSrc,
@@ -65,9 +74,9 @@ class Kamp extends Tegner{
         x: this.position.x,
         y: this.position.y,
       },
-      offset,
-      width: 100,
-      height: 50,
+      offset: attackBox.offset,
+      width: attackBox.width,
+      height: attackBox.height
     };
     this.color = color;
     this.isAttacking;
@@ -92,6 +101,9 @@ class Kamp extends Tegner{
     this.animateFrames()
     this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
     this.attackBox.position.y = this.position.y;
+
+    c.fillRect(this.attackBox.position.x, this.attackBox.position.y, this.attackBox.width, this.attackBox.height)
+
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
     if (this.position.y + this.height + this.velocity.y >= canvas.height - 50) {

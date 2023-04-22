@@ -75,6 +75,14 @@ const player = new Kamp({
       imageSrc: "./Spiller 1/Attack1.png",
       framesMax: 7
     }
+  },
+  attackBox: {
+    offset:{
+      x: 0,
+      y: 0
+    },
+    width: 100,
+    height: 50
   }
 });
 
@@ -94,35 +102,43 @@ const enemy = new Kamp({
     x: -50,
     y: 0,
   },
-  imageSrc: "./Hero Knight 2/Sprites/Idle.png",
-  framesMax: 11,
+  imageSrc: "./Spiller 2/Idle.png",
+  framesMax: 4,
   scale: 4,
   offset: {
     x: 200,
-    y: 170
+    y: 350
   },
   sprites:{
     idle:{
-      imageSrc: "./Hero Knight 2/Sprites/Idle.png",
-      framesMax: 11
+      imageSrc: "./Spiller 2/Idle.png",
+      framesMax: 4
     },
     run:{
-      imageSrc: "./Hero Knight 2/Sprites/Run.png",
+      imageSrc: "./Spiller 2/Run.png",
       framesMax: 8
     },
     jump:{
-      imageSrc: "./Hero Knight 2/Sprites/Jump.png",
-      framesMax: 4
+      imageSrc: "./Spiller 2/Jump.png",
+      framesMax: 2
     },
     fall:{
-      imageSrc: "./Hero Knight 2/Sprites/Fall.png",
-      framesMax: 4
+      imageSrc: "./Spiller 2/Fall.png",
+      framesMax: 2
     },
     attack1:{
-      imageSrc: "./Hero Knight 2/Sprites/Attack.png",
-      framesMax: 6
+      imageSrc: "./Spiller 2/Attack1.png",
+      framesMax: 4
     }
-  } 
+  },
+  attackBox: {
+    offset:{
+      x: 0,
+      y: 0
+    },
+    width: 100,
+    height: 50
+  }
 });
 
 /* Lager funksjonen keys 
@@ -182,7 +198,7 @@ function animate() {
   background.update();
   shop.update()
   player.update();
-  /* enemy.update(); */
+  enemy.update();
 
   /* Setter player sin hastighet til 0
 
@@ -217,8 +233,16 @@ function animate() {
   enemy.velocity.x = 0;
   if (keys.ArrowLeft.pressed && enemy.lastKey === "ArrowLeft") {
     enemy.velocity.x = -3;
+    enemy.switchSprite("run")
   } else if (keys.ArrowRight.pressed && enemy.lastKey === "ArrowRight") {
     enemy.velocity.x = 3;
+    enemy.switchSprite("run")
+  } else {
+    enemy.switchSprite("idle")
+  } if (enemy.velocity.y < 0){
+    enemy.switchSprite("jump")
+  } else if (enemy.velocity.y > 0){
+    enemy.switchSprite("fall")
   }
 
   /* Koden for at spilleren og motstanderen skal slå hverandre */
@@ -295,7 +319,7 @@ window.addEventListener("keydown", (event) => {
       enemy.velocity.y = -12;
       break;
     case "ArrowDown":
-      enemy.isAttacking = true;
+      enemy.attack()
       break;
   }
 });
