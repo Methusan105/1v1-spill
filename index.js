@@ -1,13 +1,27 @@
+/* Blar gjennom hele HTML-dokumenter og finner elementet canvas og velger */
 const canvas = document.querySelector('canvas')
+/* Koden som henter 2d tegningskontekst fra html canvas elementet */
+
 const c = canvas.getContext('2d')
+/* Setter canvas sin lengde og bredde til 1024 og 576 */
 
 canvas.width = 1024
 canvas.height = 576
 
+/* Koden som bruker fillrect metoden som bruker til å tegne en rektangel i canvas elementet. 
+Denne metoden tar inn 4 forskjellige argumenter som er: x, y, bredde og høyde.
+x og y er satt til 0 og bredden er satt til canvas sin lenge og bredde.*/
+
 c.fillRect(0, 0, canvas.width, canvas.height)
 
+/* Setter graviteten til 0.3 */
 const gravity = 0.3
 
+/* Denne koden oppretter en ny instans av klassen bakgrunn som er lagd i klasser js filen,
+og lagrer den i en variabel som er kalt for background.
+Koden nedenfor inneholder et argument til bakgrunn konstruktøren. 
+Denne objektet inneholder egenskapen som posisjon og bildekilde.
+ */
 const background = new Bakgrunn({
   position: {
     x: 0,
@@ -16,6 +30,11 @@ const background = new Bakgrunn({
   imageSrc: './Tiny Forest Pack/paralax/forest_paralax.jpg'
 })
 
+/* Denne koden oppretter en ny instans av klassen bakgrunn som er lagd i klasser js filen,
+og lagrer den i en variabel som er kalt for shop.
+Koden nedenfor inneholder et argument til bakgrunn konstruktøren. 
+Denne objektet inneholder egenskapen som posisjon, bildekilde, skala, og framesmax.
+Framesmax er klassen som angir maksimalt antall rammer i en animasjonssyklus. */
 const shop = new Bakgrunn({
   position: {
     x: 655,
@@ -26,6 +45,11 @@ const shop = new Bakgrunn({
   framesMax: 6
 })
 
+/* Denne koden oppretter en ny instans av klassen Spiller som er lagd i klasser js filen,
+og lagrer den i en variabel som er kalt for spiller1
+Denne objektet inneholder egenskapen som posisjon, bildekilde, skala, framesmax og offset.
+Offset er en egenskap som angir en forskyvning i x- og y-retning for spilleren.
+Denne egenskapen brukes til å justere posisjonen til spilleren på canvas elementet. */
 const spiller1 = new Spiller({
   position: {
     x: 0,
