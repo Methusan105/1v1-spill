@@ -47,7 +47,7 @@ const player = new Kamp({
     x: 0,
     y: 0,
   },
-  imageSrc: "./Martial Hero 3/Sprite/Idle.png",
+  imageSrc: "./Spiller 1/Idle.png",
   framesMax: 10,
   scale: 4,
   offset: {
@@ -56,23 +56,23 @@ const player = new Kamp({
   },
   sprites:{
     idle:{
-      imageSrc: "./Martial Hero 3/Sprite/Idle.png",
+      imageSrc: "./Spiller 1/Idle.png",
       framesMax: 10
     },
     run:{
-      imageSrc: "./Martial Hero 3/Sprite/Run.png",
+      imageSrc: "./Spiller 1/Run.png",
       framesMax: 8
     },
     jump:{
-      imageSrc: "./Martial Hero 3/Sprite/Going Up.png",
+      imageSrc: "./Spiller 1/Going Up.png",
       framesMax: 3
     },
     fall:{
-      imageSrc: "./Martial Hero 3/Sprite/Going Down.png",
+      imageSrc: "./Spiller 1/Going Down.png",
       framesMax: 3
     },
     attack1:{
-      imageSrc: "./Martial Hero 3/Sprite/Attack1.png",
+      imageSrc: "./Spiller 1/Attack1.png",
       framesMax: 7
     }
   }
@@ -182,7 +182,7 @@ function animate() {
   background.update();
   shop.update()
   player.update();
-  enemy.update();
+  /* enemy.update(); */
 
   /* Setter player sin hastighet til 0
 
