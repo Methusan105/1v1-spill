@@ -1,7 +1,7 @@
 /* Blar gjennom hele HTML-dokumenter og finner elementet canvas og velger */
 const canvas = document.querySelector('canvas')
-/* Koden som henter 2d tegningskontekst fra html canvas elementet */
 
+/* Koden som henter 2d tegningskontekst fra html canvas elementet */
 const c = canvas.getContext('2d')
 /* Setter canvas sin lengde og bredde til 1024 og 576 */
 
@@ -51,18 +51,25 @@ Denne objektet inneholder egenskapen som posisjon, bildekilde, skala, framesmax 
 Offset er en egenskap som angir en forskyvning i x- og y-retning for spilleren.
 Denne egenskapen brukes til å justere posisjonen til spilleren på canvas elementet. */
 const spiller1 = new Spiller({
+  /* Setter startposisjonen til spiller1 x og y til 0 */
   position: {
     x: 0,
     y: 0
   },
+  /* Setter hastigheten til spiller1 x og y 0 */
   velocity: {
     x: 0,
     y: 0
   },
+  /* Setter forskyvning på spilleren x og y til 0 */
   offset: {
     x: 0,
     y: 0
   },
+  /* Setter bilden til spiller 1 til idle png
+  Setter framesmax som er klassen til maksimalt antall rammer i en animasjonssyklus
+  Setter bildeskalaen til 3.5
+  Setter forskyvningen til spilleren x posisjonen til 100 og y posisjonen til 80 */
   imageSrc: './Spiller 1/Idle.png',
   framesMax: 10,
   scale: 3.5,
@@ -70,6 +77,11 @@ const spiller1 = new Spiller({
     x: 100,
     y: 80
   },
+  /* Definerer et objekt med egenskapen sprites.
+  Sprites inneholder masse forskjellige egenskaper som idle, run, jump, fall, attack1, takeHit og death
+  Disse egenskapene inneholder et bilde og framesmax.
+  Når idle blir tilkalt blir idle bilden vist på siden og framesmax blir settet til 10, det samme skjer med de andre
+   */
   sprites: {
     idle: {
       imageSrc: './Spiller 1/Idle.png',
@@ -100,6 +112,9 @@ const spiller1 = new Spiller({
       framesMax: 11
     }
   },
+  /* Denne attackboxen inneholder et objekt som offset med størrelsen og plasseringen av en angrepsboks hos figuren
+  Setter offset x verdien til 100 og y verdien til 50
+  Setter bredde til 160 og 50 for høyden */
   attackBox: {
     offset: {
       x: 100,
@@ -110,6 +125,12 @@ const spiller1 = new Spiller({
   }
 })
 
+/* Denne koden oppretter en ny instans av klassen Spiller som er lagd i klasser js filen,
+og lagrer den i en variabel som er kalt for spiller2
+Denne objektet inneholder egenskapen som posisjon, bildekilde, skala, framesmax og offset.
+Offset er en egenskap som angir en forskyvning i x- og y-retning for spilleren.
+Denne egenskapen brukes til å justere posisjonen til spilleren på canvas elementet. 
+ */
 const spiller2 = new Spiller({
   position: {
     x: 400,
@@ -131,6 +152,10 @@ const spiller2 = new Spiller({
     x: 215,
     y: 250
   },
+  /* Definerer et objekt med egenskapen sprites.
+  Sprites inneholder masse forskjellige egenskaper som idle, run, jump, fall, attack1, takeHit og death
+  Disse egenskapene inneholder et bilde og framesmax. 
+  Når idle blir tilkalt så viser den en annen idle bilden av spiller 2 og framesmax blir settet til 10 og det samme skjer med de andre */
   sprites: {
     idle: {
       imageSrc: './Spiller 2/Idle.png',
@@ -161,6 +186,9 @@ const spiller2 = new Spiller({
       framesMax: 7
     }
   },
+  /* Denne attackboxen inneholder et objekt som offset med størrelsen og plasseringen av en angrepsboks hos figuren
+  Setter offset x verdien til -170 og y verdien til 50
+  Setter bredde til 170 og 50 for høyden */
   attackBox: {
     offset: {
       x: -170,
@@ -171,8 +199,10 @@ const spiller2 = new Spiller({
   }
 })
 
-console.log(spiller1)
-
+/* Oppretter en konstant variabel som kalles for keys.
+Variabelen er et objekt som inneholder fire forskjellige egenskaper som er a, d, ArrowRight, ArrowLeft
+Hver av de er også et objekt som en egenskap som er pressed og er satt til false
+Denne koden brukes til å spore om bestemte tastetrykk er aktive eller ikke. */
 const keys = {
   a: {
     pressed: false
@@ -188,26 +218,50 @@ const keys = {
   }
 }
 
+/* Kjører funksjonen decreaseTimer */
 decreaseTimer()
 
+/* Lager en funksjon som heter animer.*/
 function animer() {
+
+  /* Denne koden gjør til at funksjonen animer blir kalt igjen på neste animasjonsramme. */
   window.requestAnimationFrame(animer)
+
+  /* Setter fargestilen til svart */
   c.fillStyle = 'black'
+
+  /* Fyller den svarte fargen fra forrige koden på hele canvas elementet */
   c.fillRect(0, 0, canvas.width, canvas.height)
+
+  /* Tilkaller updatefunksjonen på konstante variabelen background,
+  og tegner bakgrunnen hver gang funksjonen animer blir tilkalt */
   background.update()
+
+  /* Tilkaller updatefunksjonen på konstante variabelen shop,
+   og tegner bakgrunnen hver gang funksjonen snimer blir tilkalt */
   shop.update()
+
+  /* Denne koden fyller fargen hvit med gjennomsiktighet med 15%  */
   c.fillStyle = 'rgba(255, 255, 255, 0.15)'
+
+  /* Fyller den hvite fargen med 15% gjennomsiktighet fra forrige koden på hele canvas elementet */
   c.fillRect(0, 0, canvas.width, canvas.height)
+
+  /* Tilkaller updatefunksjonen på konstante variabelen spiller 1 og spiller 2,
+  og blir tegnet i canvas elementet hver gang funksjonen animer blir tilkalt */
   spiller1.update()
   spiller2.update()
 
+  /* Setter spiller 1 og spiller 2 sin x hastighet til 0 */
   spiller1.velocity.x = 0
   spiller2.velocity.x = 0
 
-  // spiller1 movement
-
+  /* Hvis knappen a er trykket og siste knappen som spiller 1 trykket er a,
+  så setter den spiller 1 sin hastighet til -5 og  */
   if (keys.a.pressed && spiller1.lastKey === 'a') {
     spiller1.velocity.x = -5
+
+    /* Denne koden bytter fra idle bilden til løpe bilden */
     spiller1.switchSprite('run')
   } else if (keys.d.pressed && spiller1.lastKey === 'd') {
     spiller1.velocity.x = 5
