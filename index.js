@@ -263,39 +263,57 @@ function animer() {
 
     /* Denne koden bytter fra idle bilden til løpe bilden */
     spiller1.switchSprite('run')
+    /* Ellers hvis knappen d og spilleren sin siste knapp er d,
+    så skal spiller sin hastighet settes til -5 og bytte til løpe bilden */
   } else if (keys.d.pressed && spiller1.lastKey === 'd') {
     spiller1.velocity.x = 5
     spiller1.switchSprite('run')
+
+    /* Ellers settes idle bilden som aktiv hvis ikke noen av knappene trykkes. */
   } else {
     spiller1.switchSprite('idle')
   }
 
-  // jumping
+  /* Hvis y hastigheten til spiller 1 er mer enn 0 (som angir at spilleren ikke er i bakken) så skal den bytte hoppe bilden til spiller 1 som den aktive bilden */
   if (spiller1.velocity.y < 0) {
     spiller1.switchSprite('jump')
-  } else if (spiller1.velocity.y > 0) {
+  } 
+  /* Ellers hvis y hastigheten til spiller 1 mindre enn 0 (som angir at spilleren faller ned) så skal den bytte fra hoppe bilden til falle bilden */
+  else if (spiller1.velocity.y > 0) {
     spiller1.switchSprite('fall')
   }
 
-  // Enemy movement
+  /* Hvis knappen pil venstre er trykket og siste knappen som trykket er pil venstre,
+  så skal den sette motstanderen sin x hastighet settes til -5 og skal bytte til løpe bilden til motstanderen */
   if (keys.ArrowLeft.pressed && spiller2.lastKey === 'ArrowLeft') {
     spiller2.velocity.x = -5
-    spiller2.switchSprite('run')
-  } else if (keys.ArrowRight.pressed && spiller2.lastKey === 'ArrowRight') {
+    spiller2.switchSprite('run')    
+  } 
+  /* Ellers hvis knappen pil høyre er trykket og siste knappen som er trykket er pil høyre,
+  så skal motstanderen sin x hastighet settes til 5 og bytte til løpebilden til motstanderen */
+  else if (keys.ArrowRight.pressed && spiller2.lastKey === 'ArrowRight') {
     spiller2.velocity.x = 5
     spiller2.switchSprite('run')
-  } else {
+  } 
+  /* Ellers skal settes idle bilden som aktiv hvis ikke noen av knappene trykkes. */
+  else {
     spiller2.switchSprite('idle')
   }
 
-  // jumping
+  /* Hvis y hastigheten til motstanderen er mer enn 0 (som angir at motstanderen ikke er i bakken) så skal den bytte hoppe bilden til spiller 1 som den aktive bilden */ 
   if (spiller2.velocity.y < 0) {
     spiller2.switchSprite('jump')
-  } else if (spiller2.velocity.y > 0) {
+  } 
+  /* Ellers hvis y hastigheten til motstanderen mindre enn 0 (som angir at motstanderen faller ned) så skal den bytte fra hoppe bilden til falle bilden */
+  else if (spiller2.velocity.y > 0) {
     spiller2.switchSprite('fall')
   }
 
-  // detect for collision & spiller2 gets hit
+  /* Denne koden sjekker om rektangelene mellom spiller 1 og motstanderen kolliderer
+  Setter rektangel 1 som spiller 1 og rektangel 2 som motstander,
+  den sjekker om spiller 1 angriper og at den sjekker om at spiller 1 viser den fjerde bilden 
+  Spiller 2 blir slått og mister liv, og setter spiller 1 ikke angriper,
+  Den blar gjennom hele html dokumentet og velger iden enemyhealth og endrer bredden til motstanderen sin helse  */
   if (
     rectangularCollision({
       rectangle1: spiller1,
@@ -306,18 +324,20 @@ function animer() {
   ) {
     spiller2.takeHit()
     spiller1.isAttacking = false
-
-    gsap.to('#enemyHealth', {
-      width: spiller2.health + '%'
-    })
+    document.querySelector("#enemyhealth").style.width = spiller2.health + "%";
   }
 
-  // if spiller1 misses
+  /* Hvis spiller 1 angriper og spiller 1 viser den fjerde bilden så skal den sette at spiller angriper til false 
+  Denne koden skjer i tillegg når spiller 1 ikke treffer*/
   if (spiller1.isAttacking && spiller1.framesCurrent === 4) {
     spiller1.isAttacking = false
   }
 
-  // this is where our spiller1 gets hit
+  /* Denne koden sjekker om rektangelene mellom motstanderen og spiller 1  kolliderer
+  Setter rektangel 1 som motstander og rektangel 2 som spiller 1,
+  den sjekker om spiller 2 angriper og at den sjekker om at spiller 2 viser den andre bilden 
+  Spiller 1 blir slått og mister liv, og setter spiller 2 ikke angriper,
+  Den blar gjennom hele html dokumentet og velger iden playerhealth og endrer bredden til motstanderen sin helse  */
   if (
     rectangularCollision({
       rectangle1: spiller2,
@@ -329,24 +349,32 @@ function animer() {
     spiller1.takeHit()
     spiller2.isAttacking = false
 
-    gsap.to('#playerHealth', {
-      width: spiller1.health + '%'
-    })
+    document.querySelector("#playerhealth").style.width = spiller1.health + "%";
   }
 
-  // if spiller1 misses
+  /* Hvis motstanderen angriper og motstanderen viser den andre bilden så skal den sette at spiller angriper til false 
+  Denne koden skjer i tillegg når spiller 2 ikke treffer*/
   if (spiller2.isAttacking && spiller2.framesCurrent === 2) {
     spiller2.isAttacking = false
   }
 
-  // end game based on health
+  /* Hvis motstanderen sin helse er 0 eller hvis helsen til spiller 1,
+   så skal den kjøre funksjonen determinewinner som tar spiller1, spiller2, timerid som argumenter  */
   if (spiller2.health <= 0 || spiller1.health <= 0) {
     determineWinner({ spiller1, spiller2, timerId })
   }
 }
 
+/* Kjører funksjonen animer() */
 animer()
 
+/* Koden lytter etter taster som blir trykket på,
+Den sjekker om spiller1 ikke er død (ved å sjekke om dead egenskapen er falsk),
+Når knappen d trykkes på så setter den at knappen d ble trykket på til true og spiller 1 trykket sist på d
+Når knappen a trykkes på så setter den at knappen a ble trykket på til true og spiller 1 trykket sist på a
+Når knappen w trykkes på setter den y hastighen til spiller1 til -11.5
+Når knappen mellomrom trykkes på så kalles attack funksjonen på spilleren
+ */
 window.addEventListener('keydown', (event) => {
   if (!spiller1.dead) {
     switch (event.key) {
@@ -366,7 +394,11 @@ window.addEventListener('keydown', (event) => {
         break
     }
   }
-
+/* Den sjekker om spiller2 ikke er død (ved å sjekke om dead egenskapen er falsk),
+Når knappen pil høyre trykkes på så setter den at knappen pil høyre ble trykket på til true og spiller 1 trykket sist på pil høyre
+Når knappen pil venstre trykkes på så setter den at knappen pil venstre ble trykket på til true og spiller 1 trykket sist på pil venstre
+Når knappen pil opp trykkes på setter den y hastighen til spiller1 til -11.5
+Når knappen pil ned trykkes på så kalles attack funksjonen på spilleren */
   if (!spiller2.dead) {
     switch (event.key) {
       case 'ArrowRight':
@@ -386,7 +418,10 @@ window.addEventListener('keydown', (event) => {
     }
   }
 })
-
+/* Koden lytter etter taster som blir sluppet
+Når knappen d sluppes på så setter den at knappen d ble trykket på til false
+Når knappen a sluppes på så setter den at knappen a ble trykket på til false
+ */
 window.addEventListener('keyup', (event) => {
   switch (event.key) {
     case 'd':
@@ -397,7 +432,8 @@ window.addEventListener('keyup', (event) => {
       break
   }
 
-  // spiller2 keys
+/* Når knappen Pil høyre sluppes på så setter den at knappen d ble trykket på til false
+Når knappen pil venstre sluppes på så setter den at knappen a ble trykket på til false */
   switch (event.key) {
     case 'ArrowRight':
       keys.ArrowRight.pressed = false
