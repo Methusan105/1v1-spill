@@ -1,3 +1,13 @@
+/* Denne koden lager en klasse som heter Bakgrunn
+Bakgrunn har en konstruktør som tar et objekt som argument
+Konstruktøren har posisjon, bilde, skala, maksimal antall rammer i en animasjon, forskyvning
+this.position = position gjør det mulig for oss å endre posisjonen til en ny objekt ved å sende inn posisjon egenskapen
+this.width = 50 slik at når vi lager ny objekt så vil bredden være 50
+this.height = 150 slik at når vi lager ny objekt så vil høyden være 150
+this.image = new Image(); når vi lager ny objekt så kan vi bruke dette objektet, objektet representerer en bilde som kan brukes i en nettside eller en canvas
+this.image.src = imageSrc 
+Klassen har tre forskjellige måter: draw(), animateFrames(), update()
+draw funksjonen tegner bilde på canvas ved hjelp av drawImage metoden*/
 class Bakgrunn {
   constructor({
     position,
