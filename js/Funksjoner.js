@@ -65,11 +65,11 @@ function decreaseTimer() {
 
 /* Lager en funksjon som heter restart game
 Hvis vinner er true så setter den en timer på 5 sekunder,
-etter 5 sekunder har gått så vil den kjøre funksjonen location.reload() (som gjør til at siden lastes inn på nytt) */
+etter 5 sekunder har gått så vil den kjøre funksjonen window.location.href = "index.html" (som gjør til at den starter spillet på nytt) */
 function restartGame() {
   if (vinner) {
     setTimeout(function () {
-      location.reload();
+      window.location.href = "index.html"
     }, 5000);
   }
 }
