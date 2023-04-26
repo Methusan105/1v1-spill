@@ -1,37 +1,36 @@
 <head>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
-    rel="stylesheet"
-  />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
   <style>
-    body{
+    body {
       background-color: black;
     }
+
     @import url('https://fonts.googleapis.com/css2?family=Carlito&display=swap');
+
     * {
       box-sizing: border-box;
       font-family: 'Press Start 2P', cursive;
+      overflow-x: hidden;
+      overflow-y: hidden;
     }
   </style>
 </head>
+
 <body>
   <!-- red container div -->
   <div style="position: relative; display: inline-block">
     <!-- smaller red container div -->
-    <div
-      style="
+    <div style="
         position: absolute;
         display: flex;
         width: 100%;
         align-items: center;
         padding: 20px;
-      "
-    >
+      ">
       <!-- player health -->
-      <div
-        style="
+      <div style="
           position: relative;
           width: 100%;
           display: flex;
@@ -39,26 +38,20 @@
           border-top: 4px solid rgb(0, 51, 255);
           border-left:4px solid rgb(0, 51, 255);
           border-bottom: 4px solid rgb(0, 51, 255);
-        "
-      >
+        ">
         <div style="background-color: red; height: 30px; width: 100%"></div>
-        <div
-          id="playerHealth"
-          style="
+        <div id="playerHealth" style="
             position: absolute;
             background: #00f619;
             top: 0;
             right: 0;
             bottom: 0;
             width: 100%;
-          "
-        ></div>
+          "></div>
       </div>
 
       <!-- timer -->
-      <div
-        id="timer"
-        style="
+      <div id="timer" style="
           background-color: black;
           width: 100px;
           height: 50px;
@@ -68,38 +61,30 @@
           justify-content: center;
           color: rgb(26, 255, 0);
           border: 4px solid rgb(0, 51, 255);
-        "
-      >
+        ">
         10
       </div>
       <!-- enemy health -->
-      <div
-        style="
+      <div style="
           position: relative;
           width: 100%;
           border-top: 4px solid rgb(0, 51, 255);
           border-bottom: 4px solid rgb(0, 51, 255);
           border-right: 4px solid rgb(0, 51, 255);
-        "
-      >
+        ">
         <div style="background-color: red; height: 30px"></div>
-        <div
-          id="enemyHealth"
-          style="
+        <div id="enemyHealth" style="
             position: absolute;
             background: #00f619;
             top: 0;
             right: 0;
             bottom: 0;
             left: 0;
-          "
-        ></div>
+          "></div>
       </div>
       <div></div>
     </div>
-    <div
-      id="displayText"
-      style="
+    <div id="displayText" style="
         position: absolute;
         color: rgb(0, 255, 42);
         align-items: center;
@@ -109,9 +94,7 @@
         bottom: 0;
         left: 0;
         display: none;
-      "
-    >
-      Tie
+      ">Tie
     </div>
     <canvas></canvas>
   </div>
