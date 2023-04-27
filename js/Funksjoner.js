@@ -28,12 +28,16 @@ function determineWinner({ spiller1, spiller2, timerId }) {
   clearTimeout(timerId);
   vinner = true;
   document.querySelector("#displayText").style.display = "flex";
+  document.querySelector("#btn").style.display = "flex";
   if (spiller1.health === spiller2.health) {
     document.querySelector("#displayText").innerHTML = "Uavgjort";
+    document.querySelector("#btn").innerHTML ="Restart Game"
   } else if (spiller1.health > spiller2.health) {
     document.querySelector("#displayText").innerHTML = "Spiller 1 vant";
+    document.querySelector("#btn").innerHTML = "Restart Game";
   } else if (spiller1.health < spiller2.health) {
     document.querySelector("#displayText").innerHTML = "Spiller 2 vant";
+    document.querySelector("#btn").innerHTML = "Restart Game";
   }
 }
 /* lager variablen vinner og setter den til falsk,
@@ -65,11 +69,15 @@ function decreaseTimer() {
 
 /* Lager en funksjon som heter restart game
 Hvis vinner er true så setter den en timer på 5 sekunder,
-etter 5 sekunder har gått så vil den kjøre funksjonen window.location.href = "index.html" (som gjør til at den starter spillet på nytt) */
+etter 5 sekunder har gått så vil den kjøre funksjonen window.location.href = "Fight.html" (som gjør til at den starter spillet på nytt) */
 function restartGame() {
   if (vinner) {
     setTimeout(function () {
-      window.location.href = "index.html"
+      window.location.href = "Fight.html"
     }, 5000);
   }
+}
+
+function restartgame(){
+  window.location.href = "Fight.html"
 }

@@ -1,104 +1,60 @@
 <head>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
-  <style>
-    body {
-      background-color: black;
-    }
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            background-color: black;
+        }
 
-    @import url('https://fonts.googleapis.com/css2?family=Carlito&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Carlito&display=swap');
 
-    * {
-      box-sizing: border-box;
-      font-family: 'Press Start 2P', cursive;
-      overflow-x: hidden;
-      overflow-y: hidden;
-    }
-  </style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Press Start 2P', cursive;
+            overflow-x: hidden;
+            overflow-y: hidden;
+        }
+        #hoved{
+            position: relative;
+            left: 350px;
+            top: 75px;
+        }
+    </style>
 </head>
 
 <body>
-  <!-- red container div -->
-  <div style="position: relative; display: inline-block">
-    <!-- smaller red container div -->
-    <div style="
-        position: absolute;
-        display: flex;
-        width: 100%;
-        align-items: center;
-        padding: 20px;
-      ">
-      <!-- player health -->
-      <div style="
-          position: relative;
-          width: 100%;
-          display: flex;
-          justify-content: flex-end;
-          border-top: 4px solid rgb(0, 51, 255);
-          border-left:4px solid rgb(0, 51, 255);
-          border-bottom: 4px solid rgb(0, 51, 255);
-        ">
-        <div style="background-color: red; height: 30px; width: 100%"></div>
-        <div id="playerHealth" style="
-            position: absolute;
-            background: #00f619;
-            top: 0;
+    <!-- red container div -->
+    <div style="position: relative; font-size: 0;" id="hoved">
+        <div onclick="Start()"><span style="font-size: 15px;
+          position: absolute;
+            color: rgb(0, 255, 42);
+            align-items: center;
+            justify-content: center;
+            top: 100;
             right: 0;
             bottom: 0;
-            width: 100%;
-          "></div>
-      </div>
-
-      <!-- timer -->
-      <div id="timer" style="
-          background-color: black;
-          width: 100px;
-          height: 50px;
-          flex-shrink: 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: rgb(26, 255, 0);
-          border: 4px solid rgb(0, 51, 255);
-        ">
-        10
-      </div>
-      <!-- enemy health -->
-      <div style="
-          position: relative;
-          width: 100%;
-          border-top: 4px solid rgb(0, 51, 255);
-          border-bottom: 4px solid rgb(0, 51, 255);
-          border-right: 4px solid rgb(0, 51, 255);
-        ">
-        <div style="background-color: red; height: 30px"></div>
-        <div id="enemyHealth" style="
-            position: absolute;
-            background: #00f619;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-          "></div>
-      </div>
-      <div></div>
-    </div>
-    <div id="displayText" style="
+            left: 300;
+            display: flex;
+            flex-wrap: wrap;
+            display: inline-block;">Start Game</span></div>
+        <div onclick="End()"><span style="
+        font-size: 15px;
         position: absolute;
         color: rgb(0, 255, 42);
         align-items: center;
         justify-content: center;
-        top: 0;
+        top: 400;
         right: 0;
         bottom: 0;
-        left: 0;
-        display: none;
-      ">Tie
+        left: 300;
+        display: flex;
+        flex-wrap: wrap;
+        font-size: 15px;
+        display: inline-block;">Quit Game</span></div>
+        <canvas></canvas>
     </div>
-    <canvas></canvas>
-  </div>
-  <script src="js/Funksjoner.js"></script>
-  <script src="js/Klasser.js"></script>
-  <script src="index.js"></script>
+    <script src="js/Funksjoner.js"></script>
+    <script src="js/Klasser.js"></script>
+    <script src="index.js"></script>
 </body>
