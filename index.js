@@ -5,7 +5,7 @@ const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
 /* Setter canvas sin lengde og bredde til 1024 og 576 */
 
-canvas.width = 1024;
+canvas.width = window.innerWidth;
 canvas.height = 576;
 
 /* Koden som bruker fillrect metoden som bruker til å tegne en rektangel i canvas elementet. 
@@ -37,7 +37,7 @@ Denne objektet inneholder egenskapen som posisjon, bildekilde, skala, og framesm
 Framesmax er klassen som angir maksimalt antall rammer i en animasjonssyklus. */
 const shop = new Bakgrunn({
   position: {
-    x: 655,
+    x: 1100,
     y: 128,
   },
   imageSrc: "./Tiny Forest Pack/shop.png",
@@ -133,7 +133,7 @@ Denne egenskapen brukes til å justere posisjonen til spilleren på canvas eleme
  */
 const spiller2 = new Spiller({
   position: {
-    x: 400,
+    x: 900,
     y: 100,
   },
   velocity: {
