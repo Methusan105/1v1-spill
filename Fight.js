@@ -149,8 +149,8 @@ const spiller2 = new Spiller({
   framesMax: 4,
   scale: 3.5,
   offset: {
-    x: 215,
-    y: 250,
+    x: 205,
+    y: 230,
   },
   /* Definerer et objekt med egenskapen sprites.
   Sprites inneholder masse forskjellige egenskaper som idle, run, jump, fall, attack1, takeHit og death
@@ -159,7 +159,7 @@ const spiller2 = new Spiller({
   sprites: {
     idle: {
       imageSrc: "./Spiller 2/Idle.png",
-      framesMax: 4,
+      framesMax: 8,
     },
     run: {
       imageSrc: "./Spiller 2/Run.png",
@@ -175,15 +175,15 @@ const spiller2 = new Spiller({
     },
     attack1: {
       imageSrc: "./Spiller 2/Attack1.png",
-      framesMax: 4,
+      framesMax: 6,
     },
     takeHit: {
       imageSrc: "./Spiller 2/Take hit.png",
-      framesMax: 3,
+      framesMax: 4,
     },
     death: {
       imageSrc: "./Spiller 2/Death.png",
-      framesMax: 7,
+      framesMax: 6,
     },
   },
   /* Denne attackboxen inneholder et objekt som offset med størrelsen og plasseringen av en angrepsboks hos figuren
@@ -191,7 +191,7 @@ const spiller2 = new Spiller({
   Setter bredde til -170 og 50 for høyden */
   attackBox: {
     offset: {
-      x: -170,
+      x: -300,
       y: 50,
     },
     width: 170,
