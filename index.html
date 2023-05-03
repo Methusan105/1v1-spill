@@ -10,7 +10,6 @@
         @import url('https://fonts.googleapis.com/css2?family=Carlito&display=swap');
 
         * {
-            box-sizing: border-box;
             font-family: 'Press Start 2P', cursive;
             overflow-x: hidden;
             overflow-y: hidden;
@@ -20,7 +19,16 @@
             left: 350px;
             top: 75px;
         }
+        #quit{
+            color: rgb(0, 255, 42);
+        }
         #quit:hover{
+            color: gray;
+        }
+        #start {
+            color: rgb(0, 255, 42);
+        }
+        #start:hover{
             color: gray;
         }
     </style>
@@ -29,32 +37,24 @@
 <body>
     <!-- red container div -->
     <div style="position: relative; font-size: 0;" id="hoved">
-        <div onclick="Start()"><span style="font-size: 15px;
+        <div onclick="Start()"style="font-size: 15px;
           position: absolute;
-            color: rgb(0, 255, 42);
             align-items: center;
             justify-content: center;
             top: 100;
             right: 0;
             bottom: 0;
             left: 300;
-            display: flex;
-            flex-wrap: wrap;
-            display: inline-block;">Start Game</span></div>
-        <div onclick="End()"><span style="
+            display: inline-block;"><p id="start">Start Game</p></div>
+        <div onclick="End()"style="
         font-size: 15px;
         position: absolute;
-        color: rgb(0, 255, 42);
-        align-items: center;
-        justify-content: center;
         top: 400;
         right: 0;
         bottom: 0;
         left: 300;
-        display: flex;
-        flex-wrap: wrap;
         font-size: 15px;
-        display: inline-block;" id="quit">Quit Game</span></div>
+        display: inline-block;"><p id="quit">Quit Game</p></div>
         <canvas></canvas>
     </div>
     <script src="js/Funksjoner.js"></script>
