@@ -113,7 +113,7 @@ const spiller1 = new Spiller({
     },
   },
   /* Denne attackboxen inneholder et objekt som offset med størrelsen og plasseringen av en angrepsboks hos figuren
-  Setter offset x verdien til 100 og y verdien til 50
+  Setter forskyvning x verdien til 100 og y verdien til 50
   Setter bredde til 160 og 50 for høyden */
   attackBox: {
     offset: {
@@ -389,7 +389,7 @@ window.addEventListener("keydown", (event) => {
         spiller1.attack();
         break;
       case "r":
-        window.location.href = "index.html"
+        location.reload()
         break;
     }
   }

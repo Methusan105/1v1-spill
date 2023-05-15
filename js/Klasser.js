@@ -60,7 +60,9 @@ class Bakgrunn {
     this.animateFrames();
   }
 }
-
+/* Gjør til at klassen spiller har tilgang til egenskapene og alle metodene fra klassen Bakgrunn og i tillegg til sine egne
+ Bakgrunn har en konstruktør som tar et objekt som argument
+Konstruktøren har posisjon, hastighet, farge, bilde, skala, forskyvning, maksimal antall rammer i en animasjon, figurer, angripsboks*/
 class Spiller extends Bakgrunn {
   constructor({
     position,
@@ -73,6 +75,7 @@ class Spiller extends Bakgrunn {
     sprites,
     attackBox = { offset: {}, width: undefined, height: undefined },
   }) {
+    /* tilkaller posisjonen, bilde, skala, framesmax, forskyvning fra klassen bakgrunn */
     super({
       position,
       imageSrc,
@@ -80,7 +83,7 @@ class Spiller extends Bakgrunn {
       framesMax,
       offset,
     });
-
+    
     this.velocity = velocity;
     this.width = 50;
     this.height = 150;

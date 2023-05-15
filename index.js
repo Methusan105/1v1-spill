@@ -1,15 +1,16 @@
-/* Blar gjennom hele HTML-dokumenter og finner elementet canvas og velger */
+/* Blar gjennom hele HTML-dokumenter og finner elementet canvas og velger det */
 const canvas = document.querySelector("canvas");
 
 /* Koden som henter 2d tegningskontekst fra html canvas elementet */
 const c = canvas.getContext("2d");
-/* Setter canvas sin lengde og bredde til 1024 og 576 */
 
+/* Setter canvas sin lengde og bredde til 800 og 576 */
 canvas.width = 800;
 canvas.height = 576;
 /* Koden som bruker fillrect metoden som bruker til å tegne en rektangel i canvas elementet. 
 Denne metoden tar inn 4 forskjellige argumenter som er: x, y, bredde og høyde.
-x og y er satt til 0 og bredden er satt til canvas sin lenge og bredde.*/
+x og y er satt til 0 og bredden er satt til canvas sin lenge og bredde. 
+fillRect betyr fylle rektangelen med en farge eller mønster*/
 
 c.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -53,11 +54,11 @@ function tegn(){
   c.fillRect(0, 0, canvas.width, canvas.height);
 
   /* Tilkaller updatefunksjonen på konstante variabelen background,
-  og tegner bakgrunnen hver gang funksjonen animer blir tilkalt */
+  og tegner bakgrunnen hver gang funksjonen tegn blir tilkalt */
   background.update();
 
   /* Tilkaller updatefunksjonen på konstante variabelen shop,
-   og tegner bakgrunnen hver gang funksjonen snimer blir tilkalt */
+   og tegner bakgrunnen hver gang funksjonen tegn blir tilkalt */
   shop.update();
 
   /* Denne koden fyller fargen hvit med gjennomsiktighet med 15%  */
